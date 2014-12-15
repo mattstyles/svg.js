@@ -1,7 +1,7 @@
 SVGJS_VERSION = '1.0.1'
 
 # all available modules in the correct loading order
-MODULES = %w[ svg selector inventor polyfill regex default color array pointarray patharray number viewbox bbox rbox element parent container fx relative event defs group arrange mask clip gradient pattern doc shape symbol use rect ellipse line poly path image text textpath nested hyperlink marker sugar set data memory loader helpers ]
+MODULES = %w[ svg selector inventor polyfill regex default color array pointarray patharray number viewbox bbox rbox element parent container fx relative event defs group arrange mask clip gradient pattern doc shape symbol use rect ellipse line poly path image text textpath nested hyperlink marker sugar set data memory helpers ]
 
 # how many bytes in a "kilobyte"
 KILO = 1024
@@ -11,7 +11,7 @@ task :default => :dist
 
 # module-aware file task
 class BuildTask < Rake::FileTask
-  
+
   def modules
     prerequisites.map { |f| File.basename(f, '.js') }
   end
@@ -34,14 +34,14 @@ class BuildTask < Rake::FileTask
   def first_line
     File.open(name, 'r') { |f| f.gets }
   end
-  
+
 end
 
 BuildTask.define_task 'dist/svg.js' => MODULES.map {|m| "src/#{ m }.js" } do |task|
   mkdir_p 'dist', :verbose => false
-  
+
   svgjs = ''
-  
+
   task.prerequisites.each do |src|
     # bring in source files one by one, but without copyright info
     copyright = true
@@ -51,7 +51,7 @@ BuildTask.define_task 'dist/svg.js' => MODULES.map {|m| "src/#{ m }.js" } do |ta
     end
     svgjs << "\n\n"
   end
-  
+
   File.open(task.name, 'w') do |file|
     file.puts "/* svg.js %s - %s - svgjs.com/license */" % [version_string, task.modules.join(' ')]
     file.puts ";(function(root, factory) {"
@@ -68,7 +68,7 @@ BuildTask.define_task 'dist/svg.js' => MODULES.map {|m| "src/#{ m }.js" } do |ta
     file.puts "  return SVG"
     file.puts "}));"
   end
-  
+
 end
 
 file 'dist/svg.min.js' => 'dist/svg.js' do |task|

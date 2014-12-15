@@ -27,23 +27,23 @@ SVG.eid = function(name) {
 SVG.create = function(name) {
   /* create element */
   var element = document.createElementNS(this.ns, name)
-  
+
   /* apply unique id */
   element.setAttribute('id', this.eid(name))
-  
+
   return element
 }
 
 // Method for extending objects
 SVG.extend = function() {
   var modules, methods, key, i
-  
+
   /* get list of modules */
   modules = [].slice.call(arguments)
-  
+
   /* get object with extensions */
   methods = modules.pop()
-  
+
   for (i = modules.length - 1; i >= 0; i--)
     if (modules[i])
       for (key in methods)
